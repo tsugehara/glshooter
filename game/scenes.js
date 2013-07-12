@@ -151,7 +151,6 @@ var ContinueScene;
                         START_STAGE = 1;
                         NUM_OF_STAGE = 3;
                         app.practiceMode = false;
-                        MUTE_SE || tm.sound.WebAudioManager.get("effect0").play();
                         break;
                     case 1: // practice
                         app.pointing.button = 0; app.pointing.update();
@@ -531,14 +530,6 @@ var ContinueScene;
                 case 2: // autoBomb
                     app.settings["autoBomb"] = !app.settings["autoBomb"];
                     break;
-                }
-            }
-
-            if (this.selection === 1) {
-                if (!MUTE_SE && (app.keyboard.getKeyUp("right") || app.keyboard.getKeyUp("left") || app.pointing.getPointingEnd())) {
-                    var s = tm.sound.WebAudioManager.get("explode");
-                    s.volume = app.settings["se"];
-                    s.play();
                 }
             }
 

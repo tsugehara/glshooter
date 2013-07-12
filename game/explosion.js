@@ -132,7 +132,6 @@ var Explosion = function(scene, texture) {
                 };
                 scene.addChild(p);
             }
-            MUTE_SE || tm.sound.WebAudioManager.get("bomb").play();
             var check = function() {
                 if (readyCount === pool.length) {
                     callback();

@@ -44,7 +44,6 @@ var createBoss = function(app, attackParam, explosion, stage, texture) {
         if (boss.maxHp*0.5 < this.damagePoint) {
             // 第2形態へ
             app.clearAllBullets(true);
-            WebAudioManager.get("explode").play();
             explode(this.x+Random.randfloat(-2, 2), this.y+Random.randfloat(-2, 2), Random.randfloat(1, 2));
             explode(this.x+Random.randfloat(-2, 2), this.y+Random.randfloat(-2, 2), Random.randfloat(1, 2));
             explode(this.x+Random.randfloat(-2, 2), this.y+Random.randfloat(-2, 2), Random.randfloat(1, 2));
@@ -52,7 +51,6 @@ var createBoss = function(app, attackParam, explosion, stage, texture) {
             this.update = function() {
                 this.x += Math.sin(scene.frame*0.3)*0.02;
                 if (t < scene.frame && (scene.frame - t) % 5 === 0 && Math.random() < 0.5) {
-                    WebAudioManager.get("explode").play();
                     explode(this.x+Random.randfloat(-3, 3), this.y+Random.randfloat(-3, 3), Random.randfloat(0.5, 1));
                 }
                 if (scene.frame === t+75) {
@@ -80,7 +78,6 @@ var createBoss = function(app, attackParam, explosion, stage, texture) {
             // 撃破
             app.player.disabled = true;
             app.clearAllBullets(true);
-            WebAudioManager.get("explode").play();
             explode(this.x+Random.randfloat(-2, 2), this.y+Random.randfloat(-2, 2), Random.randfloat(1, 2));
             explode(this.x+Random.randfloat(-2, 2), this.y+Random.randfloat(-2, 2), Random.randfloat(1, 2));
             explode(this.x+Random.randfloat(-2, 2), this.y+Random.randfloat(-2, 2), Random.randfloat(1, 2));
@@ -96,7 +93,6 @@ var createBoss = function(app, attackParam, explosion, stage, texture) {
                 this.scaleY -= 0.005;
                 this.rotation -= 0.03;
                 if (t < scene.frame && (scene.frame - t) % 5 === 0 && Math.random() < 0.5) {
-                    WebAudioManager.get("explode").play();
                     explode(this.x+Random.randfloat(-3, 3), this.y+Random.randfloat(-3, 3), Random.randfloat(0.5, 1));
                 }
                 if (scene.frame === t + 250) {

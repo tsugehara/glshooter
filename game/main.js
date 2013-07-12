@@ -25,8 +25,6 @@
  */
 
 // config
-var MUTE_SE =  false; // if true, not play sounds.
-var MUTE_BGM = false; // if true, not play bgm.
 var FPS = 60;
 var BULLET_SPEED = 0.10;
 var DBL_CLICK_INTERVAL = 200;
@@ -90,12 +88,6 @@ tm.preload(function() {
         MUTE_SE = true;
         return;
     }
-
-    tm.sound.WebAudioManager.add("explode",   "sounds/se_maoudamashii_explosion05.mp3");
-    tm.sound.WebAudioManager.add("effect0",   "sounds/effect0.mp3", 1);
-    tm.sound.WebAudioManager.add("bomb",      "sounds/nc17909.mp3");
-    tm.sound.WebAudioManager.add("v-genBomb", "sounds/voice_gen-bomb.mp3", 1);
-    tm.sound.WebAudioManager.add("v-extend",  "sounds/voice_extend.mp3", 1);
 });
 
 tm.main(function() {
@@ -137,11 +129,9 @@ tm.main(function() {
         if (0 < delta) {
             if (beforeExtBomb !== ~~(app.score / EXTEND_SCORE_BOMB)) {
                 app.bomb += 1;
-                MUTE_SE || WebAudioManager.get("v-genBomb").play();
             }
             if (beforeExtZanki !== ~~(app.score / EXTEND_SCORE_LIFE)) {
                 app.zanki += 1;
-                MUTE_SE || WebAudioManager.get("v-extend").play();
             }
         }
     };
@@ -157,13 +147,6 @@ tm.main(function() {
     app.resetGameStatus();
 
     app.currentStage = START_STAGE;
-
-    var setVolumeSe = app.setVolumeSe = function() {
-        ["explode", "effect0", "bomb", "v-genBomb", "v-extend"].forEach(function(s) {
-            WebAudioManager.get(s).volume = app.settings["se"];
-        });
-    };
-    setVolumeSe();
 
     var gameScene = app.gameScene = tm.app.Scene();
 
@@ -359,8 +342,6 @@ tm.main(function() {
             if (this.clear !== true) {
                 explode(this.x, this.y, this.scaleX);
                 if (0 < expSoundPlaying) return;
-                MUTE_SE || WebAudioManager.get("explode").play();
-                expSoundPlaying = 5;
             } else {
                 var timer = new glslib.Sprite(mainTexture);
                 timer.texX = 7;
@@ -371,10 +352,6 @@ tm.main(function() {
                 timer.update = function() {
                     clearAllBullets(false);
                     if (scene.frame % 5 === 0 && Math.random() < 0.7) {
-                        if (expSoundPlaying <= 0) {
-                            MUTE_SE || WebAudioManager.get("explode").play();
-                            expSoundPlaying = 5;
-                        }
                         explode(this.x+Math.random()*6-3, this.y+Math.random()*6-3, 2);
                     } else if (scene.frame > t+60) {
                         scene.removeChild(this);
@@ -621,26 +598,6 @@ tm.main(function() {
         scene.frame = 0;
 
         var stage = app.currentStage;
-
-        // bgm
-        if (!MUTE_BGM) {
-            if (app.bgm) {
-                app.bgm.stop();
-            }
-            app.bgm = tm.sound.Sound(BGM["bgm" + stage]);
-            if (app.bgm) {
-                var play = function() {
-                    if (app.bgm.loaded) {
-                        app.bgm.volume = settings["bgm"];
-                        app.bgm.loop = true;
-                        app.bgm.play();
-                    } else {
-                        setTimeout(play, 100);
-                    }
-                };
-                play();
-            }
-        }
 
         // boss
         if (boss !== void 0) {
